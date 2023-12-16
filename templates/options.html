@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Menu</title>
+<meta charset=”UTF-8″>
+<meta name="description" content="A"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="robots" content="index, follow, archive, noimageindex">
+<meta http-equiv="Content-type" content="text/html; charset=UTF-8"/>
+<meta http-equiv="Cache-Control" content="no-cache"/>
+<meta http-equiv="Pragma" content="no-cache"/>
+<meta http-equiv="Expires" content="0"/>
+<style>
+table	{ width: 100%; border-spacing: 2px; border-collapse: collapse; border: 1px solid black; }
+p,th,td	{ font-family: arial; text-align: left; font-size: 10px; border: 1px solid black; padding: 4px; }
+
+*{
+    box-sizing: border-box;
+    margin: 0;
+    font-family: arial;
+    font-size: 10px;
+}
+.wrapper{
+    margin: auto;
+    width: 100%;
+    max-width: 1000px;
+    padding:10px;
+    background-color: #cccccc;
+}
+input {
+    width: 15%;
+}
+fieldset {
+    width: 15%;
+    display: inline-block;
+    box-sizing: border-box;
+    font-family: arial;
+    font-size: 10px;
+}
+fieldset input {
+    width: 100%;
+}
+</style>
+</head>
+<body>
+  <!-- Begin Form -->
+  <form method="get" action="results.html" target="results">
+  <fieldset>
+    <legend>Directory:</legend>
+    <select name="directory" id="directory" size=1>
+      <option value="" selected> Directories</option>
+      {% for v in directories %}
+        <option value="{{v}}"{% if v == directory %} selected{% endif %}>{{v}}</option>
+      {% endfor %}
+    </select>
+  </fieldset>
+  <fieldset>
+    <legend>Workspace Name:</legend>
+    <select name="workspace" id="workspace" size=1>
+      <option value="" selected> Workspaces</option>
+      {% for v in workspaces %}
+        <option value="{{v}}"{% if v == workspace %} selected{% endif %}>{{v}}</option>
+      {% endfor %}
+    </select>
+  </fieldset>
+  <fieldset>
+    <legend>Module:</legend>
+    <select name="module" id="module" size=1>
+      <option value="" selected> Modules</option>
+      {% for v in modules %}
+        <option value="{{v}}"{% if v == module %} selected{% endif %}>{{v}}</option>
+      {% endfor %}
+    </select>
+  </fieldset>
+  <fieldset>
+    <legend>Resource Type:</legend>
+    <select name="resource_type" id="resource_type" size=1>
+      <option value="" selected> Resource Types</option>
+      {% for v in resource_types %}
+        <option value="{{v}}"{% if v == resource_type %} selected{% endif %}>{{v}}</option>
+      {% endfor %}
+    </select>
+  </fieldset>
+  <fieldset>
+    <legend>Index Key:</legend>
+    <select name="index_key" id="index_key" size=1>
+      <option value="" selected> Index Keys</option>
+      {% for v in index_keys %}
+        <option value="{{v}}">{{v}}</option>
+      {% endfor %}
+    </select>
+  </fieldset>
+  <!-- End Form -->
+  </form><p><span id="num_resources">{{num_resources}}</span> resources discovered</p>
+<script>
+
+(async() => {
+
+  let url = new URL(window.location.href);
+
+  // If certain drop-downs change, refresh query string & uptime time
+  const selector_fields = ['directory', 'module', 'workspace', 'resource_type'];
+
+  selector_fields.forEach((selector_field) => {
+
+    const selector = document.getElementById(selector_field);
+    selector.onchange = (event) => {
+
+      // Update search parameters if selected option has changed
+      if (url.searchParams.has(selector_field)) {
+          //console.log(`field ${selector_field} has been changed to ${event.target.value}`);
+          url.searchParams.set(selector_field, event.target.value);
+      } else {
+          //console.log(`field ${selector_field} has been set to ${event.target.value}`);
+          url.searchParams.append(selector_field, event.target.value);
+      }
+
+      console.log("Reloading page at this URL: " + url);
+      //self.location = url;
+
+      // Update Parent
+      parent.location.search = url.search
+      //parent.location.reload();
+      console.log("Self location updated to this: " + url.search);
+
+    }
+  });
+
+
+})();
+
+</script>
+</body>
+</html>

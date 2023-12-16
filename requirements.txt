@@ -1,0 +1,5 @@
+asyncio
+quart
+hypercorn
+gcloud-aio-storage
+google-auth

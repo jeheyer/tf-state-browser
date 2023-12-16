@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Terraform Workspace Browser</title>
+<meta charset=”UTF-8″>
+<meta http-equiv="Content-type" content="text/html; charset=UTF-8"/>
+<meta http-equiv="Cache-Control" content="no-cache"/>
+<meta http-equiv="Pragma" content="no-cache"/>
+<meta http-equiv="Expires" content="0"/>
+<style>
+  iframe.options 	  { width: 99%; height: 65px; }
+  iframe.resources { width: 99%; height: 1024px; }
+</style>
+</head>
+<body>
+<iframe name='options' id='options' class="options" src="options.html"></iframe>
+<iframe name='resources' id='resources' class="resources" src="resources.html" allowfullscreen></iframe>
+<script>
+
+/*
+  const frames = ["options", "resources"];
+  for (frame of frames) {
+    let iframe = document.getElementById(frame);
+    iframe.src = frame + ".html?" + location.search.substr(1);
+    console.log("I frame src is " + iframe.src);
+  }
+*/
+</script>
+    
+</body>
+</html> 
