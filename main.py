@@ -4,17 +4,16 @@ from asyncio import run, gather
 from gcloud.aio.auth import Token
 from gcloud.aio.storage import Storage
 from google.oauth2.service_account import Credentials
-from os import scandir
 from subprocess import Popen, PIPE
 from platform import system
-from os import environ
+from os import environ, scandir
 import google.auth
 import google.auth.transport.requests
 import json
 
 #TF_BASE = '/mnt/homes/j5/OpenText/repos/otc-network/terraform/'
 #TF_BASE = '../../../../OneDrive - OpenText/repos/otc-network/terraform/'
-TF_BASE = '../otl-network/terraform/'
+TF_BASE = '../otc-network/terraform/'
 DIRECTORIES = ['root', 'vm-services', 'network-services', 'vpc-network', 'gcp_vpc_network', 'hybrid-networking', 'lb']
 SCOPES = ["https://www.googleapis.com/auth/cloud-platform.read-only"]
 REQUEST_TIMEOUT = 3
@@ -140,6 +139,7 @@ class Directory:
             workspaces = [workspace for workspace in self.workspaces if workspace.name == workspace_name]
         else:
             workspaces = self.workspaces
+        print(len(workspaces), "were fetched in directory", self.name)
         for workspace in workspaces:
             if self.backend_config.type == 'gcs':
                 token = self.backend_config.bucket.token
@@ -181,7 +181,8 @@ async def get_directories(directory_names: list = None) -> dict:
 
     try:
         if not directory_names:
-            directory_names = DIRECTORIES
+            #directory_names = DIRECTORIES
+            directory_names = [d.name for d in scandir(TF_BASE) if d.is_dir()]
         _ = [Directory(f"{TF_BASE}{directory_name}") for directory_name in directory_names]
         return _
     except Exception as e:

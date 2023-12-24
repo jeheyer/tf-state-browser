@@ -27,7 +27,7 @@ async def _root():
 async def _menu():
 
     options = {}
-
+    print(dict(request.args))
     try:
 
         directories = await get_directories()
@@ -89,6 +89,9 @@ async def _menu():
 
                 #if selected_resource_type := request.args.get('resource'):
                 #    session.update({'resource': selected_resource})
+        else:
+            print('no directory selected')
+
 
         return await render_template(
             template_name_or_list='options.html',
