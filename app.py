@@ -6,7 +6,7 @@ from collections import Counter
 from main import *
 
 
-app = Quart(__name__)
+app = Quart(__name__, static_url_path='/static')
 app.config['JSON_SORT_KEYS'] = False
 app.config['SESSION_COOKIE_SAMESITE'] = "Strict"
 app.secret_key = str(randint(0, 100000000))

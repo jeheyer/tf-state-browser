@@ -11,10 +11,10 @@ import google.auth
 import google.auth.transport.requests
 import json
 
-#TF_BASE = '/mnt/homes/j5/OpenText/repos/otc-network/terraform/'
-#TF_BASE = '../../../../OneDrive - OpenText/repos/otc-network/terraform/'
-TF_BASE = '../otc-network/terraform/'
-DIRECTORIES = ['root', 'vm-services', 'network-services', 'vpc-network', 'gcp_vpc_network', 'hybrid-networking', 'lb']
+#TF_BASE="../../../OpenText/repos/otc-network/terraform/"
+#DIRECTORIES = ['root', 'vm-services', 'network-services', 'vpc-network', 'gcp_vpc_network', 'hybrid-networking', 'lb']
+TF_BASE = "../../../OpenText/repos/xvpc/"
+DIRECTORIES = ['dev','test','perf']
 SCOPES = ["https://www.googleapis.com/auth/cloud-platform.read-only"]
 REQUEST_TIMEOUT = 3
 
@@ -162,8 +162,6 @@ class Directory:
 
         return resources
 
-            #return ["aklsjdf", "laksjdf", "alskdfjlasdkfjdlsakfjalsdkf"]
-
 
 def run_command(command: str, directory: str = "./") -> list:
 
@@ -194,11 +192,12 @@ async def main():
     directories = await get_directories()
 
     try:
+        # Get backend config for each directory
         tasks = [directory.get_backend_config() for directory in directories]
-        [_ for _ in await gather(*tasks)]
-
+        _ = [_ for _ in await gather(*tasks)]
+        # Get workspaces for each directory
         tasks = [directory.get_workspaces() for directory in directories]
-        [_ for _ in await gather(*tasks)]
+        _ = [_ for _ in await gather(*tasks)]
     except Exception as e:
         quit(e)
     #print(directories)
